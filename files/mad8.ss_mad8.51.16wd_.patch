@@ -1,0 +1,54 @@
+18a19,22
+> * 15-FEB-2007, W. Decking (DESY)
+> *   Implemented exact Rosenzweig-Serrafin Matrix to be consistent with
+> *   elegant at low energies
+> *   Set nvers = '8.51/16' to indicate modified version                                           
+4156c4160,4161
+<       nvers = '8.51/15s'
+---
+> *wd   nvers = '8.51/15s'
+>       nvers = '8.51/16'
+62469a62475,62479
+> +if desy
+> * Modified: 15-FEB-2007, W. Decking (DESY                             *
+> *   Implemented exact Rosenzweig-Serrafin Matrix to be consistent with *
+> *   elegant at low energies                                            *
+> +ei
+62507a62518,62520
+> +if desy
+>       double precision alph
+> +ei      
+62596a62610,62636
+> +if desy
+> *--- Implement Rosenzweig-Serafini Matrix
+>         call m66one(re)
+>         re(6,5) = omega * vrf * sin(phirf) / (ener1 + denergy)
+>      +          / (one + deltas)
+>         re(6,6) = ener1 / (ener1 + denergy)
+>         alph = sqrt(one/8.0)/cos(phirf)*log(one+denergy/ener1)         
+>         re(1,1) = cos(alph)
+>         re(3,3) = re(1,1)
+>         re(2,2) = ener1 / (ener1 + denergy) * cos(alph)
+>         re(4,4) = re(2,2)
+>         if (abs(denergy/ener1) .lt. ten6m) then
+>          fact = one
+>         else
+>          fact = sqrt(8.0)*ener1/denergy * cos(phirf) * sin(alph)
+>         endif
+>         re(1,2) = el * fact
+>         re(3,4) = re(1,2)
+>         if (abs(denergy/ener1) .lt. ten6m) then
+>          fact = zero
+>         else
+>          fact = -sqrt(one/8.0)*denergy/((ener1+denergy)*cos(phirf))
+>      +          *sin(alph)
+>         endif
+>         re(2,1) = fact / el
+>         re(4,3) = re(2,1)
+> +el
+62610a62651
+> +ei
+62661c62702
+<           call tmtrak(ek, re, te, orbit, orbit)
+---
+>           call tmtrak(ek, re, te, orbt, orbt)
